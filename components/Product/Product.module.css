@@ -1,0 +1,100 @@
+.item {
+  padding: 12px;
+  min-height: 84px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.14s ease;
+}
+
+.item:hover {
+  background: rgba(255, 255, 255, 0.016);
+}
+
+.itemMain {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: inherit;
+}
+
+.itemIcon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  color: var(--text-soft);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.itemBody {
+  min-width: 0;
+}
+
+.itemName {
+  font-size: 11px;
+  color: var(--text-soft);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemUrl {
+  margin-top: 4px;
+  font-size: 9px;
+  color: var(--dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemActions {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  flex: 0 0 auto;
+}
+
+.itemDate {
+  font-size: 9px;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.favorite {
+  border: 0;
+  background: none;
+  color: var(--dim);
+  padding: 4px;
+}
+
+.favorite:hover {
+  color: var(--accent);
+}
+
+.favoriteActive {
+  color: var(--accent);
+}
+
+.favorite svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 520px) {
+  .itemDate {
+    display: none;
+  }
+}

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <circle
+    cx="24"
+    cy="24"
+    r="22"
+    fill="#0c090a"
+  />
+
+  <text
+    x="24"
+    y="34"
+    text-anchor="middle"
+    fill="#f2eeee"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="32"
+    font-weight="400"
+    letter-spacing="-2"
+  >S</text>
+</svg>
