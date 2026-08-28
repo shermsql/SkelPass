@@ -54,11 +54,11 @@ export default function PasswordField({
         <button
           type="button"
           className={styles.toggle}
-          aria-label={visible ? "Hide password" : "Show password"}
+          aria-label={visible ? "Hide Password" : "Show Password"}
           onClick={() => setVisible((v) => !v)}
         >
           <svg>
-            <use href={visible ? "#icon-eye-off" : "#icon-eye"} />
+            <use href={visible ? "#Icon-Eye-Off" : "#Icon-Eye"} />
           </svg>
         </button>
       </div>
