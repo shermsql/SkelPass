@@ -4,7 +4,7 @@ import { getUsersCollection } from "./mongodb";
 
 import type { PublicUser, UserDocument } from "./types";
 
-const SESSION_COOKIE_NAME = "skelpass_session";
+const SESSION_COOKIE_NAME = "skelpass-session";
 const SESSION_DURATION_SECONDS = 60 * 60 * 24 * 30; // 30 Days
 
 function getJwtSecretKey(): Uint8Array {
