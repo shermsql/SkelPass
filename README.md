@@ -1,316 +1,164 @@
-### 🔐 SkelPass
+### SkelPass 🔒
 
-A modern, privacy-focused password manager built for the web. Manage your passwords from a clean, secure vault with client-side encryption.
+SkelPass is a calm password manager that lets you keep your passwords,
+account details in one secure vault.
 
-SkelPass is a modern password manager built with Next.js, TypeScript, Tailwind CSS and Supabase.
+This project is built with **Next.js (App Router)** and **MongoDB**.
 
-The project is focused specifically on password management. Vault data is encrypted in the browser before it is stored in Supabase.
+#### 🚀 Features
 
-#### ✨ Tech Stack
+- Sign up / log in with email + master password (bcrypt-hashed)
+- JWT-based session management with HttpOnly cookies (edge-compatible via `jose`)
+- Every password in the vault is encrypted server-side, field by field, with
+  **AES-256-GCM**
+- Add / edit / delete / favorite passwords
+- Fully user-managed folders: create, rename, and delete folders from the
+  sidebar; deleting a folder never deletes its passwords — they simply
+  become uncategorized
+- Account settings page: edit name/email, upload and crop a profile photo,
+  change your master password
+- Search, vault health score, secure password generator
+- `middleware.ts` protects the `/dashboard` route (and everything under it)
 
-- Next.js 16
-- React
-- TypeScript
-- Tailwind CSS
-- Supabase Auth
-- Supabase PostgreSQL
-- Supabase Storage
-- Web Crypto API
-- Electron Windows desktop application
+#### 📋 Project Structure
 
-### 🚀 Features
-
-#### 🔑 Authentication
-
-- Email/password registration
-- Login/logout
-- Protected dashboard
-- Onboarding after registration
-
-#### 👋 Onboarding
-
-Users configure:
-
-- First name
-- Last name
-- Username
-- Profile image
-- Vault master password
-
-#### 🗄️ Password Vault
-
-- Create passwords
-- Edit passwords
-- Delete passwords
-- Search passwords
-- Copy username/password
-- Show/hide password
-- Secure password generator
-- Vault lock/unlock
-
-#### 🛡️ Security
-
-Vault encryption is performed client-side using the Web Crypto API.
-
-The current encryption flow uses:
-
-- PBKDF2
-- SHA-256
-- AES-256-GCM
-- Random per-operation IVs
-- Random KDF salt
-
-Plaintext vault passwords are not stored in Supabase.
-
-The master password itself is never stored.
-
-#### 👤 Profile
-
-Users can manage:
-
-- Profile image
-- First name
-- Last name
-- Username
-- Bio
-- Location
-- Website
-- Phone number
-
-Users can also delete their account and view registered/login devices.
-
-### 📁 Project Structure
-
-```text
-skelpass/
-├── app/
-│   ├── (marketing)/
-│   ├── api/
-│   ├── dashboard/
-│   ├── login/
-│   ├── onboarding/
-│   ├── profile/
-│   ├── register/
-│   └── ...
-├── components/
-│   ├── AuthForm/
-│   ├── DashboardShell/
-│   ├── Footer/
-│   ├── Header/
-│   ├── PasswordManager/
-│   ├── Sidebar/
-│   └── ...
-├── data/
-│   └── content.ts
-├── lib/
-│   ├── crypto/
-│   └── supabase/
-├── public/
-│   └── downloads/
-├── supabase/
-│   └── migrations/
-│       └── schema.sql
-├── types/
-├── .env.example
-├── next.config.ts
-├── package.json
-└── proxy.ts
+```
+app/
+  page.tsx                          Landing page
+  page.module.css
+  login/page.tsx                    Login page
+  register/page.tsx                 Register page
+  dashboard/
+    layout.tsx                      Shared shell (Sidebar + Topbar) for /dashboard/*
+    DashboardContext.tsx            Client-side state shared across dashboard pages
+    page.tsx                        Vault view (protected)
+    Dashboard.module.css
+    account/
+      page.tsx                      Account settings (profile photo, name/email, password)
+      Account.module.css
+  api/
+    auth/register/route.ts
+    auth/login/route.ts
+    auth/logout/route.ts
+    auth/me/route.ts
+    auth/profile/route.ts           PATCH — update name/email/avatar
+    auth/password/route.ts          PATCH — change master password
+    vault/route.ts                  GET (list) / POST (create)
+    vault/[id]/route.ts             GET / PATCH / DELETE
+    vault/generate/route.ts         Secure password generator
+    folders/route.ts                GET (list) / POST (create)
+    folders/[id]/route.ts           PATCH (rename) / DELETE
+components/
+  Product/Product.tsx               A single vault entry card (+ .module.css)
+  Sidebar/Sidebar.tsx               Vault nav, folder management, account link
+  Topbar/Topbar.tsx                 Search + mobile menu
+  VaultModal/VaultModal.tsx         Add/edit password modal
+  Nav/Nav.tsx                       Landing page navigation
+  Footer/Footer.tsx
+  AuthLayout/AuthLayout.tsx         Shared Login/Register shell
+  PasswordField/PasswordField.tsx
+  IconSprite/IconSprite.tsx         Shared SVG icon set
+lib/
+  mongodb.ts                        MongoDB connection singleton
+  auth.ts                           JWT session helpers + fresh profile lookup
+  crypto.ts                         AES-256-GCM encryption helpers
+  types.ts                          Shared TypeScript types (camelCase fields)
+middleware.ts                       Protects the /dashboard route
 ```
 
-The project follows component-based architecture and colocated component files.
+#### 🚀 Setup
 
-Example:
+1. Install dependencies:
 
-```text
-components/Example/
-├── Example.tsx
-└── Example.module.css
+   ```bash
+   npm install
+   ```
+
+2. Copy `.env.example` to `.env.local` and fill in the values:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   - `MONGODB_URI` — your MongoDB connection string (local or MongoDB Atlas)
+   - `MONGODB_DB` — database name (default: `skelpass`)
+   - `JWT_SECRET` — session signing secret. Generate one with:
+     ```bash
+     openssl rand -base64 48
+     ```
+   - `ENCRYPTION_KEY` — a base64-encoded, 32-byte AES key used to encrypt
+     vault passwords. Generate one with:
+     ```bash
+     openssl rand -base64 32
+     ```
+
+   > ⚠️ If you lose or rotate `ENCRYPTION_KEY`, every password saved up to
+   > that point becomes undecryptable. Keep this key somewhere safe (e.g. a
+   > secrets manager).
+
+3. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+   The app runs at http://localhost:3000 by default.
+
+#### 📦 Database Collections
+
+MongoDB is schemaless, so no separate migration step is required —
+collections are created automatically on first write.
+
+- **users**: `name`, `email`, `passwordHash`, `avatarDataUrl`, `createdAt`,
+  `updatedAt`
+- **vaultItems**: `userId`, `service`, `website`, `username`,
+  `passwordEncrypted` ({ `iv`, `content`, `tag` }), `passwordStrength`,
+  `folder` (folder name, or `null` if uncategorized), `favorite`,
+  `createdAt`, `updatedAt`
+- **folders**: `userId`, `name`, `createdAt`. Four starter folders (Work,
+  Personal, Development, Finance) are seeded for every new account and can
+  be renamed or deleted freely afterwards.
+
+For performance, you may optionally create these indexes:
+
+```js
+db.users.createIndex({ email: 1 }, { unique: true });
+db.vaultItems.createIndex({ userId: 1, updatedAt: -1 });
+db.folders.createIndex({ userId: 1, name: 1 });
 ```
 
-Static UI text is kept in:
+#### 🔧 Deploying (Vercel Recommended)
 
-```text
-data/content.ts
-```
+1. Push this repo to a Git provider (GitHub/GitLab).
+2. Import the project on [Vercel](https://vercel.com).
+3. Add the following environment variables in the project settings:
+   `MONGODB_URI`, `MONGODB_DB`, `JWT_SECRET`, `ENCRYPTION_KEY`.
+4. A managed service like [MongoDB Atlas](https://www.mongodb.com/atlas) is
+   recommended. To let Vercel's serverless functions reach your Atlas
+   cluster, allow `0.0.0.0/0` (or Vercel's IP ranges) under Atlas Network
+   Access.
+5. Deploy. Vercel automatically runs `next build`.
 
-### 🗃️ Database
-
-The main application tables are:
-
-```text
-auth.users
-    │
-    ├── profiles
-    ├── vaultSettings
-    ├── passwords
-    └── loginDevices
-```
-
-#### vaultSettings
-
-Stores vault configuration and verification material.
-
-It does not store the user's master password.
-
-#### passwords
-
-Stores encrypted password records.
-
-Typical fields:
-
-```text
-id
-userId
-encryptedData
-encryptionIv
-encryptionVersion
-createdAt
-updatedAt
-```
-
-#### profiles
-
-Stores user profile information.
-
-#### loginDevices
-
-Stores application-level device information for authenticated users.
-
-### ⚡ Supabase Setup
-
-Create a Supabase project and configure the environment variables.
-
-Create `.env.local`:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=Your_Publishable_Key
-
-SUPABASE_SERVICE_ROLE_KEY=Your-Service-Role-Key
-```
-
-`SUPABASE_SERVICE_ROLE_KEY` is server-only.
-
-Never expose it through:
-
-- `NEXT_PUBLIC_*`
-- Client Components
-- browser JavaScript
-- Git repositories
-
-Run the database schema from:
-
-```text
-supabase/migrations/schema.sql
-```
-
-The schema enables Row Level Security and grants authenticated users access only to their own records.
-
-### 🛠️ Installation
-
-Install dependencies:
+Alternatively, you can run it on any Node.js-capable server:
 
 ```bash
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-Open:
-
-```text
-http://localhost:3000
-```
-
-### 🚢 Production
-
-Before deployment:
-
-```bash
-npm ci
-npm run lint
-npm run typecheck
 npm run build
+npm run start
 ```
 
-Then start the production server:
+#### 🔒 Security Notes
 
-```bash
-npm start
-```
+- Master passwords are never stored in plain text; they're hashed with
+  `bcrypt` (cost factor 12).
+- Every password field in the vault is individually encrypted with
+  AES-256-GCM using `ENCRYPTION_KEY`.
+- The session token (JWT) is stored in an `HttpOnly`, `SameSite=Lax`
+  cookie, sent with the `Secure` flag in production
+  (`NODE_ENV=production`). When "Remember me" is unchecked at login, the
+  cookie is set as a session cookie that expires when the browser closes.
+- Every API route verifies the requester's session, and users can only
+  ever access records tied to their own `userId`.
 
-Configure the production environment variables in the hosting provider.
+#### 📄 License
 
-Do not commit `.env.local`.
-
-### 🗑️ Account Deletion
-
-Account deletion is handled server-side.
-
-The application uses the Supabase Admin API to delete the authenticated user.
-
-The service role key must only be available to the server-side account deletion route.
-
-Related data should be removed through the configured foreign-key cascade relationships.
-
-### 🔒 Security Notes
-
-SkelPass is designed so that the Supabase database does not need plaintext vault passwords.
-
-The general data flow is:
-
-```text
-Master Password
-      │
-      ▼
-PBKDF2 / SHA-256
-      │
-      ▼
-AES-256-GCM Key
-      │
-      ▼
-Browser-side encryption
-      │
-      ▼
-Supabase ciphertext
-```
-
-Supabase Row Level Security restricts records using the authenticated user's ID.
-
-For production, verify the complete authentication and vault lifecycle in the deployed environment.
-
-### 🎨 Code Style
-
-The project uses:
-
-- TypeScript
-- camelCase property and database column naming
-- Semicolons
-- Colocated components
-- CSS Modules where component-specific styling is required
-- Tailwind CSS for utility styling
-- Server Components by default
-- Client Components only where browser interactivity is required
-
-Example:
-
-```ts
-const password = {
-  userId: user.id,
-  encryptedData,
-  encryptionIv,
-  encryptionVersion: 1,
-};
-```
-
-### 📄 License
-
-SkelPass is released under the MIT License.
-
-Copyright © 2026 SkelPass.
-
-See the [`LICENSE.txt`](LICENSE.txt) file for the complete license text.
+MIT — See [LICENSE](./LICENSE.txt).

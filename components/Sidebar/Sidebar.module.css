@@ -1,57 +1,348 @@
 .sidebar {
-  width: 250px;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  border-right: 1px solid #e8eaf1;
-  background: #fff;
+  position: fixed;
+  z-index: 50;
+  inset: 0 auto 0 0;
+  width: 224px;
+  padding: 27px 14px 17px;
+  background: var(--side);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
-.navItem,
-.navItemActive {
+.logo {
   display: flex;
   align-items: center;
-  gap: 11px;
-  width: 100%;
-  padding: 11px 12px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 650;
-  text-decoration: none;
-  color: #687188;
+  gap: 9px;
+  padding: 0 9px;
+  font: 22px var(--serif);
 }
 
-.navItemActive {
-  background: #eff0ff;
-  color: #4f46e5;
+.logo svg {
+  width: 27px;
+  height: 27px;
+  color: var(--accent);
 }
 
-.navItem:hover {
-  background: #f7f7fb;
-  color: #32384b;
+.navGroup {
+  margin-top: 42px;
 }
 
-.smallButton {
+.navLabel {
+  padding: 0 10px;
+  margin-bottom: 9px;
+  color: var(--dim);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navLink {
+  position: relative;
+  height: 37px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-width: 0;
-  padding: 8px 6px;
-  border-radius: 10px;
-  background: #fff;
-  color: #596176;
+  gap: 10px;
+  padding: 0 10px;
+  color: var(--muted);
   font-size: 10px;
-  font-weight: 700;
+  border-radius: 5px;
+  border: 0;
+  background: none;
+  width: 100%;
+  text-align: left;
 }
 
-.smallButton:hover {
-  background: #eeeef5;
-  color: #2f3447;
+.navLink svg {
+  width: 15px;
+  height: 15px;
+  color: var(--dim);
 }
 
-@media(max-width:1023px) {
+.navLink:hover {
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text-soft);
+}
+
+.navLinkActive {
+  background: rgba(220, 139, 123, 0.075);
+  color: var(--text);
+}
+
+.navLinkActive::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 9px;
+  width: 2px;
+  background: var(--accent);
+}
+
+.navLinkActive svg {
+  color: var(--accent);
+}
+
+.navCount {
+  margin-left: auto;
+  color: var(--dim);
+  font-size: 8px;
+}
+
+.navLabelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px 0 10px;
+  margin-bottom: 9px;
+}
+
+.navLabelRow .navLabel {
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.folderAddToggle {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--dim);
+}
+
+.folderAddToggle:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--accent);
+}
+
+.folderAddToggle svg {
+  width: 11px;
+  height: 11px;
+}
+
+.folders {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.folder {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 6px 0 10px;
+  color: var(--muted);
+  font-size: 9px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.folder:hover {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-soft);
+}
+
+.folder:hover .folderDelete {
+  opacity: 1;
+}
+
+.folderActive {
+  background: rgba(220, 139, 123, 0.075);
+  color: var(--text);
+}
+
+.folderDot {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+.folderName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.folderCount {
+  color: var(--dim);
+  font-size: 8px;
+}
+
+.folderDelete {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--dim);
+  opacity: 0;
+  transition: opacity 0.14s ease, color 0.14s ease, background 0.14s ease;
+}
+
+.folderDelete:hover {
+  color: #e8a4a4;
+  background: rgba(220, 90, 90, 0.1);
+}
+
+.folderDelete svg {
+  width: 11px;
+  height: 11px;
+}
+
+.foldersEmpty {
+  padding: 8px 10px;
+  color: var(--dim);
+  font-size: 8px;
+}
+
+.folderForm {
+  margin-top: 4px;
+  padding: 8px 10px;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.folderForm input {
+  width: 100%;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.015);
+  color: var(--text);
+  font-size: 10px;
+}
+
+.folderForm input:focus {
+  border-color: var(--border-light);
+}
+
+.folderFormActions {
+  display: flex;
+  gap: 6px;
+  margin-top: 7px;
+}
+
+.folderFormActions button {
+  height: 24px;
+  padding: 0 9px;
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  background: none;
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.folderFormActions button:first-child {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #170e0e;
+  font-weight: 600;
+}
+
+.folderFormActions button:first-child:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.folderFormError {
+  margin-top: 6px;
+  color: #e8a4a4;
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+.account {
+  margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  border-radius: 6px;
+  transition: background 0.14s ease;
+}
+
+.account:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.avatar {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(220, 139, 123, 0.35);
+  border-radius: 6px;
+  background: rgba(220, 139, 123, 0.06);
+  color: var(--accent);
+  font-size: 8px;
+  font-weight: 600;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.accountName {
+  font-size: 9px;
+  color: var(--text-soft);
+}
+
+.accountEmail {
+  font-size: 7px;
+  color: var(--dim);
+  margin-top: 2px;
+}
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 760px) {
   .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .overlay {
     display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  .overlayActive {
+    display: block;
   }
 }

@@ -1,0 +1,381 @@
+.app {
+  min-height: 100vh;
+}
+
+.main {
+  margin-left: 224px;
+  min-width: 0;
+}
+
+.content {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 52px 46px 90px;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  margin-bottom: 42px;
+}
+
+.eyebrow {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.heading h1 {
+  margin-top: 7px;
+  font: 400 clamp(38px, 4.35vw, 52px) / 0.9 var(--serif);
+  letter-spacing: -0.04em;
+}
+
+.heading h1 em {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.headingActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headingNote {
+  font-size: 9px;
+  color: var(--dim);
+  max-width: 170px;
+  line-height: 1.5;
+}
+
+.addButton {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px;
+  border: 1px solid var(--accent);
+  border-radius: 5px;
+  background: var(--accent);
+  color: #170e0e;
+  font-size: 10px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(220, 139, 123, 0.08);
+  white-space: nowrap;
+}
+
+.addButton:hover {
+  background: #e89a8a;
+}
+
+.addButton svg {
+  width: 13px;
+  height: 13px;
+}
+
+.workspace {
+  display: grid;
+  position: relative;
+  grid-template-columns: minmax(0, 1fr) 275px;
+  gap: 58px;
+  align-items: start;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--text-soft);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.clearFilter {
+  border: 1px solid var(--border2);
+  border-radius: 99px;
+  padding: 3px 9px;
+  background: none;
+  color: var(--dim);
+  font-size: 8px;
+  text-transform: none;
+}
+
+.clearFilter:hover {
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+
+.sectionMeta {
+  font-size: 9px;
+  color: var(--dim);
+}
+
+.vaultList {
+  display: flex;
+  flex-direction: column;
+}
+
+.noResults {
+  padding: 45px 0;
+  text-align: center;
+  font-size: 10px;
+  color: var(--dim);
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+  padding-top: 2px;
+}
+
+.securityHeader {
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+  font-size: 9px;
+  color: var(--text-soft);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.securityScore {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 0 19px;
+  border-bottom: 1px solid var(--border);
+}
+
+.score {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border2);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(220, 139, 123, 0.07), transparent 68%);
+  flex: 0 0 auto;
+}
+
+.score strong {
+  position: relative;
+  z-index: 1;
+  font: 400 24px var(--serif);
+}
+
+.scoreCopy strong {
+  display: block;
+  font-size: 10px;
+  color: var(--text-soft);
+  font-weight: 500;
+}
+
+.scoreCopy span {
+  display: block;
+  margin-top: 5px;
+  font-size: 8px;
+  line-height: 1.5;
+  color: var(--dim);
+}
+
+.securityRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 9px;
+}
+
+.securityRow:last-child {
+  border-bottom: 0;
+}
+
+.securityRowLabel {
+  color: var(--muted);
+}
+
+.securityRowValue {
+  color: var(--green);
+}
+
+.warning .securityRowValue {
+  color: var(--yellow);
+}
+
+.quick {
+  padding-top: 1px;
+}
+
+.quickTitle {
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+.quickDescription {
+  margin-top: 5px;
+  font-size: 8px;
+  line-height: 1.5;
+  color: var(--dim);
+}
+
+.quickList {
+  margin-top: 13px;
+}
+
+.quickButton {
+  width: 100%;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: none;
+  color: var(--muted);
+  text-align: left;
+}
+
+.quickButton:last-child {
+  border-bottom: 0;
+}
+
+.quickButton:hover {
+  color: var(--text-soft);
+}
+
+.quickIcon {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--accent);
+}
+
+.quickIcon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.quickButton > span:last-child {
+  font-size: 9px;
+}
+
+.folderSection {
+  margin-top: 42px;
+}
+
+.folderGrid {
+  display: grid;
+  gap: 10px;
+  margin-top: 21px;
+}
+
+.folderCard {
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  transition: background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  text-align: left;
+}
+
+.folderCard:nth-child(odd) {
+  border-left: 1px solid var(--border);
+}
+
+.folderCard:hover {
+  background: rgba(255, 255, 255, 0.025);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.folderCard svg {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+}
+
+.folderCard strong {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-soft);
+}
+
+.folderCard span {
+  font-size: 8px;
+  color: var(--dim);
+}
+
+@media (max-width: 980px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .rightColumn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+  }
+}
+
+@media (max-width: 760px) {
+  .main {
+    margin-left: 0;
+  }
+
+  .content {
+    padding: 33px 17px 60px;
+  }
+
+  .heading {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 30px;
+  }
+
+  .heading h1 {
+    font-size: 44px;
+  }
+
+  .headingActions {
+    width: 100%;
+  }
+
+  .headingNote {
+    display: none;
+  }
+
+  .addButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .rightColumn {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .folderSection {
+    margin-top: 35px;
+  }
+}
