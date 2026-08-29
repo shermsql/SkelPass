@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./Preview.png" alt="SkelPass Preview" width="800">
+</p>
+
 ### SkelPass 🔒
 
 SkelPass is a calm password manager that lets you keep your passwords,
