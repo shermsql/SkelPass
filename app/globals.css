@@ -27,6 +27,33 @@
   --container: 1180px;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0809;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6b4140;
+  border-radius: 999px;
+  border: 2px solid #0b0809;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #df8c7d;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 * ,
 *::before,
 *::after {
