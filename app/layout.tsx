@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+import { Analytics } from '@vercel/analytics/next';
 
 import IconSprite from "@/components/IconSprite/IconSprite";
+
+import type { Metadata } from "next";
 
 import "./globals.css";
 
@@ -28,8 +30,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <IconSprite />
+        <Analytics />
         {children}
+        <IconSprite />
       </body>
     </html>
   );
