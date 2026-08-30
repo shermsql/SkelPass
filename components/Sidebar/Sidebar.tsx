@@ -108,7 +108,7 @@ export default function Sidebar() {
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}>
         <Link href="/" className={styles.logo}>
           <svg>
-            <use href="#icon-logo" />
+            <use href="#Icon-Logo" />
           </svg>
           SkelPass
         </Link>
@@ -188,7 +188,7 @@ export default function Sidebar() {
                   onClick={(event) => handleDeleteFolder(event, folder.id, folder.name)}
                 >
                   <svg>
-                    <use href="#trash" />
+                    <use href="#Trash" />
                   </svg>
                 </button>
               </div>
