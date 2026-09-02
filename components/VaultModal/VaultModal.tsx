@@ -90,7 +90,7 @@ export default function VaultModal({
     setError(null);
 
     if (!form.service.trim() || !form.password) {
-      setError("Service Name And Password Are Required.");
+      setError("Service name and password are required.");
       return;
     }
 
@@ -109,15 +109,17 @@ export default function VaultModal({
       });
 
       const data = await response.json();
+
       if (!response.ok) {
-        setError(data.error || "An Error Occurred While Saving.");
-        setSaving(false);
+        setError(data.error || "An error occurred while saving.");
         return;
       }
 
       onSaved();
-    } catch {
-      setError("Could Not Connect To The Server. Please Try Again.");
+    } catch (err) {
+      console.error("Vault save failed:", err);
+      setError("Could not connect to the server. Please try again.");
+    } finally {
       setSaving(false);
     }
   }
