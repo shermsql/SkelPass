@@ -51,6 +51,17 @@
   text-overflow: ellipsis;
 }
 
+.itemNameRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.noteIcon {
+  flex: 0 0 auto;
+  color: var(--dim);
+}
+
 .itemUrl {
   margin-top: 4px;
   font-size: 9px;

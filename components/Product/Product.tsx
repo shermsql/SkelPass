@@ -41,7 +41,26 @@ export default function Product({ item, onSelect, onToggleFavorite }: ProductPro
       >
         <div className={styles.itemIcon}>{initial}</div>
         <div className={styles.itemBody}>
-          <div className={styles.itemName}>{item.service}</div>
+          <div className={styles.itemNameRow}>
+            <div className={styles.itemName}>{item.service}</div>
+            {item.hasNote && (
+              <svg className={styles.noteIcon} width="12" height="12" viewBox="0 0 20 20">
+                <title>Has a note</title>
+                <path
+                  d="M5 2.5h7l3 3v12H5V2.5Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                />
+                <path
+                  d="M12 2.5v3h3M7.5 9h5M7.5 12h5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                />
+              </svg>
+            )}
+          </div>
           <div className={styles.itemUrl}>
             {[hostname, item.folder].filter(Boolean).join(" · ")}
           </div>

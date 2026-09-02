@@ -35,6 +35,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
   }
 
   const password = decryptSecret(doc.passwordEncrypted);
+  const note = doc.noteEncrypted ? decryptSecret(doc.noteEncrypted) : null;
 
   return NextResponse.json({
     item: {
@@ -44,9 +45,11 @@ export async function GET(_request: Request, { params }: RouteParams) {
       username: doc.username,
       folder: doc.folder,
       favorite: doc.favorite,
+      hasNote: doc.noteEncrypted !== null,
       createdAt: doc.createdAt.toISOString(),
       updatedAt: doc.updatedAt.toISOString(),
       password,
+      note,
       passwordStrength: doc.passwordStrength,
     },
   });
@@ -98,6 +101,10 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       update.passwordEncrypted = encryptSecret(body.password);
       update.passwordStrength = estimatePasswordStrength(body.password);
     }
+    if (typeof body.note === "string") {
+      const trimmed = body.note.trim();
+      update.noteEncrypted = trimmed ? encryptSecret(trimmed) : null;
+    }
 
     const items = await getVaultItemsCollection();
     const result = await items.findOneAndUpdate(
@@ -118,6 +125,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
         username: result.username,
         folder: result.folder,
         favorite: result.favorite,
+        hasNote: result.noteEncrypted !== null,
         createdAt: result.createdAt.toISOString(),
         updatedAt: result.updatedAt.toISOString(),
         passwordStrength: result.passwordStrength,

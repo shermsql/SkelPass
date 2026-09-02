@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 import type { FolderDto, VaultItemDetailDto } from "@/lib/types";
 
+import Select from "@/components/Select/Select";
+
 import styles from "./VaultModal.module.css";
 
 const UNCATEGORIZED = "__uncategorized__";
@@ -23,6 +25,7 @@ const EMPTY_FORM = {
   website: "",
   username: "",
   password: "",
+  note: "",
   folder: UNCATEGORIZED,
 };
 
@@ -50,6 +53,7 @@ export default function VaultModal({
         website: item.website ?? "",
         username: item.username ?? "",
         password: item.password,
+        note: item.note ?? "",
         folder: item.folder ?? UNCATEGORIZED,
       });
     } else {
@@ -64,7 +68,7 @@ export default function VaultModal({
 
   async function handleGenerate() {
     try {
-      const response = await fetch("/api/vault/generate?length=20");
+      const response = await fetch("/api/vault/generate?length=24");
       const data = await response.json();
       if (response.ok) {
         setForm((f) => ({ ...f, password: data.password }));
@@ -169,16 +173,16 @@ export default function VaultModal({
               <label>Website</label>
               <input
                 type="url"
-                placeholder="https://"
+                placeholder="https://pass.skelvric.com"
                 value={form.website}
                 onChange={(event) => setForm((f) => ({ ...f, website: event.target.value }))}
               />
             </div>
 
             <div className={styles.field}>
-              <label>Username or email</label>
+              <label>Username or Email</label>
               <input
-                placeholder="you@example.com"
+                placeholder="support@skelvric.com"
                 value={form.username}
                 onChange={(event) => setForm((f) => ({ ...f, username: event.target.value }))}
               />
@@ -231,18 +235,27 @@ export default function VaultModal({
             </div>
 
             <div className={styles.field}>
+              <label>Note</label>
+              <textarea
+                className={styles.textarea}
+                placeholder="Add A Note (Recovery Codes, Security Questions)"
+                rows={3}
+                value={form.note}
+                onChange={(event) => setForm((f) => ({ ...f, note: event.target.value }))}
+              />
+            </div>
+
+            <div className={styles.field}>
               <label>Folder</label>
-              <select
+              <Select
+                id="vault-folder-select"
+                options={[
+                  { value: UNCATEGORIZED, label: "Uncategorized" },
+                  ...folders.map((folder) => ({ value: folder.name, label: folder.name })),
+                ]}
                 value={form.folder}
-                onChange={(event) => setForm((f) => ({ ...f, folder: event.target.value }))}
-              >
-                <option value={UNCATEGORIZED}>Uncategorized</option>
-                {folders.map((folder) => (
-                  <option key={folder.id} value={folder.name}>
-                    {folder.name}
-                  </option>
-                ))}
-              </select>
+                onChange={(value) => setForm((f) => ({ ...f, folder: value }))}
+              />
               {folders.length === 0 && (
                 <p className={styles.hint}>
                   You can create folders from the sidebar to organize your vault.

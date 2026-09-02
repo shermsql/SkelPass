@@ -32,6 +32,7 @@ export interface VaultItemDocument {
   website: string | null;
   username: string | null;
   passwordEncrypted: EncryptedPayload;
+  noteEncrypted: EncryptedPayload | null;
   passwordStrength: PasswordStrength;
   folder: string | null;
   favorite: boolean;
@@ -46,6 +47,7 @@ export interface VaultItemListDto {
   username: string | null;
   folder: string | null;
   favorite: boolean;
+  hasNote: boolean;
   createdAt: string;
   updatedAt: string;
   passwordStrength: PasswordStrength;
@@ -53,6 +55,7 @@ export interface VaultItemListDto {
 
 export interface VaultItemDetailDto extends VaultItemListDto {
   password: string;
+  note: string | null;
 }
 
 export interface FolderDocument {
