@@ -89,7 +89,7 @@ export default function LandingPage() {
                   <span />
                   <span />
                 </div>
-                <span className={styles.vaultTitle}>SkelPass Desktop</span>
+                <span className={styles.vaultTitle}>Vault Preview</span>
                 <span style={{ width: 24, height: 24 }} />
               </div>
 
@@ -118,7 +118,7 @@ export default function LandingPage() {
 
                 <div className={styles.vaultContent}>
                   <div className={styles.vaultContentTop}>
-                    <span className={styles.vaultContentTitle}>All credentials</span>
+                    <span className={styles.vaultContentTitle}>All Credentials</span>
                     <button className={styles.addButtonMini} type="button" aria-label="Add Credential">
                       <svg width="13" height="13">
                         <use href="#Icon-Plus" />
@@ -145,8 +145,8 @@ export default function LandingPage() {
               </div>
 
               <div className={styles.vaultFooter}>
-                <span>4 credentials</span>
-                <span>Vault protected</span>
+                <span>4 Credentials</span>
+                <span>Vault Protected</span>
               </div>
             </div>
           </div>
@@ -199,30 +199,172 @@ export default function LandingPage() {
                   Your passwords, <em>nobody&#39;s business but yours.</em>
                 </h2>
                 <p className={styles.sectionIntro}>
-                  Every password in your vault is encrypted server-side with
-                  AES-256-GCM, and your session is protected with JWT-based,
-                  HttpOnly cookies. Your master password is never stored in
-                  plain text — it&#39;s hashed with bcrypt.
+                  Every password in your vault is encrypted server-side,
+                  and your session is protected. Your master password is never stored in
+                  plain text — it&#39;s hashed.
                 </p>
               </div>
               <ul className={styles.securityList}>
                 <li>
-                  <svg><use href="#Icon-Check" /></svg>
-                  Field-level encryption with AES-256-GCM
+                  <svg>
+                    <use href="#Icon-Check" />
+                  </svg>
+                  Field-Level Encryption
                 </li>
                 <li>
-                  <svg><use href="#Icon-Check" /></svg>
-                  Master password hashing with bcrypt
+                  <svg>
+                    <use href="#Icon-Check" />
+                  </svg>
+                  Master Password Hashing
                 </li>
                 <li>
-                  <svg><use href="#Icon-Check" /></svg>
-                  Session management with HttpOnly, SameSite cookies
+                  <svg>
+                    <use href="#Icon-Check" />
+                  </svg>
+                  Session Management
                 </li>
                 <li>
-                  <svg><use href="#Icon-Check" /></svg>
-                  Every user can only access their own vault
+                  <svg>
+                    <use href="#Icon-Check" />
+                  </svg>
+                  User-Isolated Vaults
                 </li>
               </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className={`${styles.section} ${styles.sectionBorder}`} id="Download">
+          <div className="container">
+            <div className={styles.sectionHead}>
+              <div className={styles.eyebrowSmall}>Download</div>
+
+              <h2 className={styles.sectionTitle}>
+                SkelPass, <em>on your desktop.</em>
+              </h2>
+
+              <p className={styles.sectionIntro}>
+                Keep your vault close with the SkelPass desktop app. Windows is
+                available now, with macOS and Linux coming soon.
+              </p>
+            </div>
+
+            <div className={styles.downloadGrid}>
+              <div className={`${styles.downloadCard} ${styles.downloadCardActive}`}>
+                <div className={styles.downloadCardTop}>
+                  <div className={styles.platformIcon} aria-hidden="true">
+                    <svg>
+                      <use href="#Icon-Windows" />
+                    </svg>
+                  </div>
+
+                  <span className={styles.platformStatus}>
+                    Available Now
+                  </span>
+                </div>
+
+                <h3>Windows</h3>
+
+                <p>
+                  Download the latest SkelPass Desktop release for Windows.
+                </p>
+
+                <a
+                  href="https://github.com/Skelvric/SkelPass-Desktop/releases/tag/v0.2.0"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${styles.btn} ${styles.btnPrimary} ${styles.downloadButton}`}
+                >
+                  Download for Windows
+
+                  <svg className={styles.icon}>
+                    <use href="#Icon-Arrow" />
+                  </svg>
+                </a>
+              </div>
+
+              <div className={styles.downloadCard}>
+                <div className={styles.downloadCardTop}>
+                  <div className={styles.platformIcon} aria-hidden="true">
+                    <svg>
+                      <use href="#Icon-Apple" />
+                    </svg>
+                  </div>
+
+                  <span className={styles.platformStatusSoon}>
+                    Coming Soon
+                  </span>
+                </div>
+
+                <h3>macOS</h3>
+
+                <p>
+                  The native Mac desktop experience is currently in development.
+                </p>
+
+                <div
+                  className={`${styles.btn} ${styles.btnSecondary} ${styles.downloadButtonDisabled}`}
+                >
+                  Coming Soon
+                </div>
+              </div>
+
+              <div className={styles.downloadCard}>
+                <div className={styles.downloadCardTop}>
+                  <div className={styles.platformIcon} aria-hidden="true">
+                    <svg>
+                      <use href="#Icon-Linux" />
+                    </svg>
+                  </div>
+
+                  <span className={styles.platformStatusSoon}>
+                    Coming Soon
+                  </span>
+                </div>
+
+                <h3>Linux</h3>
+
+                <p>
+                  A Linux build is on the roadmap and will be available soon.
+                </p>
+
+                <div
+                  className={`${styles.btn} ${styles.btnSecondary} ${styles.downloadButtonDisabled}`}
+                >
+                  Coming Soon
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className={`${styles.section} ${styles.sectionBorder}`} id="Sponsor">
+          <div className={`container ${styles.sponsorInner}`}>
+            <div className={styles.sponsorCopy}>
+              <div className={styles.eyebrowSmall}>Become A Sponsor</div>
+
+              <h2 className={styles.sponsorTitle}>
+                SkelPass is free. <em>Help us keep it that way.</em>
+              </h2>
+
+              <p className={styles.sectionIntro}>
+                Support the continued development of SkelPass by sponsoring the project
+                on GitHub.
+              </p>
+            </div>
+
+            <div className={styles.sponsorAction}>
+              <a
+                href="https://github.com/sponsors/shermsql"
+                target="_blank"
+                rel="noreferrer"
+                className={`${styles.btn} ${styles.btnSecondary} ${styles.btnLarge}`}
+              >
+                Become A GitHub Sponsor
+                <svg className={styles.icon}>
+                  <use href="#Icon-Arrow" />
+                </svg>
+              </a>
             </div>
           </div>
         </section>
@@ -248,7 +390,7 @@ export default function LandingPage() {
         <section className={styles.cta}>
           <div className="container">
             <div className={styles.ctaInner}>
-              <div className={styles.ctaLabel}>Start with a cleaner vault.</div>
+              <div className={styles.ctaLabel}>Start With A Cleaner Vault</div>
               <h2>
                 Keep your digital life <em>together.</em>
               </h2>
@@ -258,13 +400,13 @@ export default function LandingPage() {
               </p>
               <div className={styles.ctaActions}>
                 <Link href="/register" className={`${styles.btn} ${styles.btnPrimary} ${styles.btnLarge}`}>
-                  Start for free
+                  Start for Free
                   <svg className={styles.icon}>
                     <use href="#Icon-Arrow" />
                   </svg>
                 </Link>
                 <Link href="/login" className={`${styles.btn} ${styles.btnSecondary} ${styles.btnLarge}`}>
-                  Log in
+                  Log In
                 </Link>
               </div>
             </div>
