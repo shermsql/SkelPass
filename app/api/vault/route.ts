@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 
 import { getCurrentSession } from "@/lib/auth";
 import { getFoldersCollection, getVaultItemsCollection } from "@/lib/mongodb";
-import { encryptSecret, estimatePasswordStrength } from "@/lib/crypto";
+import { decryptSecret, encryptSecret, estimatePasswordStrength } from "@/lib/crypto";
 
 import type { VaultItemDocument, VaultItemListDto } from "@/lib/types";
 
@@ -18,6 +18,7 @@ function toListDto(
     username: doc.username,
     folder: doc.folder,
     favorite: doc.favorite,
+    hasNote: doc.noteEncrypted !== null,
     createdAt: doc.createdAt.toISOString(),
     updatedAt: doc.updatedAt.toISOString(),
     passwordStrength: doc.passwordStrength,
@@ -55,6 +56,7 @@ export async function POST(request: Request) {
     const website = typeof body.website === "string" ? body.website.trim() : "";
     const username = typeof body.username === "string" ? body.username.trim() : "";
     const password = typeof body.password === "string" ? body.password : "";
+    const note = typeof body.note === "string" ? body.note.trim() : "";
     const requestedFolder =
       typeof body.folder === "string" && body.folder.trim() ? body.folder.trim() : null;
 
@@ -82,6 +84,7 @@ export async function POST(request: Request) {
       website: website || null,
       username: username || null,
       passwordEncrypted: encryptSecret(password),
+      noteEncrypted: note ? encryptSecret(note) : null,
       passwordStrength: estimatePasswordStrength(password),
       folder,
       favorite: false,
@@ -100,9 +103,11 @@ export async function POST(request: Request) {
         username: doc.username,
         folder: doc.folder,
         favorite: doc.favorite,
+        hasNote: doc.noteEncrypted !== null,
         createdAt: doc.createdAt.toISOString(),
         updatedAt: doc.updatedAt.toISOString(),
         passwordStrength: doc.passwordStrength,
+        note: doc.noteEncrypted ? decryptSecret(doc.noteEncrypted) : null,
       },
     });
   } catch (error) {

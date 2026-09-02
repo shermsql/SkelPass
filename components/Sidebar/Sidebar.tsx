@@ -125,7 +125,7 @@ export default function Sidebar() {
               <svg>
                 <use href="#Key" />
               </svg>
-              All passwords
+              All Passwords
               <span className={styles.navCount}>{items.length}</span>
             </button>
             <button
@@ -241,13 +241,13 @@ export default function Sidebar() {
               <svg>
                 <use href="#User" />
               </svg>
-              Account settings
+              Settings
             </Link>
             <button type="button" className={styles.navLink} onClick={logout}>
               <svg>
                 <use href="#Logout" />
               </svg>
-              Log out
+              Log Out
             </button>
           </nav>
         </div>

@@ -148,6 +148,31 @@
   line-height: 1.6;
 }
 
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.012);
+  color: var(--text);
+  font-size: 12px;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 68px;
+}
+
+.textarea::placeholder {
+  color: var(--dim);
+}
+
+.textarea:focus {
+  border-color: var(--border2);
+  background: rgba(220, 139, 123, 0.018);
+  box-shadow: 0 0 0 3px rgba(220, 139, 123, 0.055);
+}
+
 .modalFooter {
   display: flex;
   justify-content: flex-end;

@@ -1,0 +1,111 @@
+.root {
+	position: relative;
+}
+
+.trigger {
+	width: 100%;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 12px;
+	border: 1px solid var(--border);
+	border-radius: 5px;
+	background: rgba(255, 255, 255, 0.012);
+	color: var(--text);
+	font-size: 12px;
+	font-family: inherit;
+	cursor: pointer;
+	transition: border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+}
+
+.trigger:hover {
+	border-color: var(--border-light);
+}
+
+.triggerOpen,
+.trigger:focus-visible {
+	border-color: var(--border2);
+	background: rgba(220, 139, 123, 0.018);
+	box-shadow: 0 0 0 3px rgba(220, 139, 123, 0.055);
+	outline: none;
+}
+
+.value {
+	color: var(--text);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.placeholder {
+	color: var(--dim);
+}
+
+.chevron {
+	flex: 0 0 auto;
+	color: var(--dim);
+	transition: transform 0.16s ease, color 0.16s ease;
+}
+
+.triggerOpen .chevron {
+	transform: rotate(180deg);
+	color: var(--accent);
+}
+
+.menu {
+	z-index: 1000;
+	overflow-y: auto;
+	padding: 5px;
+	margin-top: 8px;
+	border: 1px solid var(--border2);
+	border-radius: 7px;
+	background: #120e0f;
+	box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+	list-style: none;
+	animation: selectMenuIn 0.12s ease;
+}
+
+@keyframes selectMenuIn {
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.option {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 32px;
+	padding: 0 12px;
+	margin: 4px 0;
+	border: 0;
+	border-radius: 5px;
+	background: none;
+	color: var(--text-soft);
+	font-size: 12px;
+	text-align: left;
+	cursor: pointer;
+}
+
+.option:hover {
+	background: rgba(255, 255, 255, 0.03);
+	color: var(--text);
+}
+
+.optionActive {
+	background: rgba(220, 139, 123, 0.08);
+	color: var(--accent-light);
+}
+
+.check {
+	color: var(--accent);
+	flex: 0 0 auto;
+}

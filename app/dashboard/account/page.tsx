@@ -219,11 +219,11 @@ export default function AccountPage() {
         <svg>
           <use href="#Chevron-Left" />
         </svg>
-        Back to vault
+        Back to Vault
       </Link>
 
       <div className={styles.heading}>
-        <div className={styles.eyebrow}>Manage your account</div>
+        <div className={styles.eyebrow}>Manage your account.</div>
         <h1>
           Account <em>settings.</em>
         </h1>
@@ -231,7 +231,7 @@ export default function AccountPage() {
 
       <div className={styles.grid}>
         <section className={styles.card}>
-          <div className={styles.cardTitle}>Profile photo</div>
+          <div className={styles.cardTitle}>Profile Photo</div>
           <div className={styles.avatarRow}>
             <div className={styles.avatarLarge}>
               {user?.avatarDataUrl ? (
@@ -266,7 +266,7 @@ export default function AccountPage() {
                   onClick={handleRemoveAvatar}
                   disabled={avatarUploading}
                 >
-                  Remove photo
+                  Remove Photo
                 </button>
               )}
               <input
@@ -283,7 +283,7 @@ export default function AccountPage() {
         </section>
 
         <section className={styles.card}>
-          <div className={styles.cardTitle}>Profile details</div>
+          <div className={styles.cardTitle}>Profile Details</div>
           <form onSubmit={handleProfileSubmit}>
             <div className={styles.field}>
               <label htmlFor="name">Name</label>
@@ -296,7 +296,7 @@ export default function AccountPage() {
               />
             </div>
             <div className={styles.field}>
-              <label htmlFor="email">Email address</label>
+              <label htmlFor="email">Email Address</label>
               <input
                 id="email"
                 type="email"
@@ -316,10 +316,10 @@ export default function AccountPage() {
         </section>
 
         <section className={styles.card}>
-          <div className={styles.cardTitle}>Change master password</div>
+          <div className={styles.cardTitle}>Change Master Password</div>
           <form onSubmit={handlePasswordSubmit}>
             <div className={styles.field}>
-              <label htmlFor="currentPassword">Current password</label>
+              <label htmlFor="currentPassword">Current Password</label>
               <input
                 id="currentPassword"
                 type="password"
@@ -330,7 +330,7 @@ export default function AccountPage() {
               />
             </div>
             <div className={styles.field}>
-              <label htmlFor="newPassword">New password</label>
+              <label htmlFor="newPassword">New Password</label>
               <input
                 id="newPassword"
                 type="password"
@@ -342,7 +342,7 @@ export default function AccountPage() {
               />
             </div>
             <div className={styles.field}>
-              <label htmlFor="confirmNewPassword">Confirm new password</label>
+              <label htmlFor="confirmNewPassword">Confirm New Password</label>
               <input
                 id="confirmNewPassword"
                 type="password"
