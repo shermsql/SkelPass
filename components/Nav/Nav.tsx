@@ -9,6 +9,8 @@ const links = [
   { href: "#Product", label: "Product" },
   { href: "#Features", label: "Features" },
   { href: "#Security", label: "Security" },
+  { href: "#Download", label: "Download" },
+  { href: "#Sponsor", label: "Sponsor" },
   { href: "#Support", label: "Support" },
 ];
 
@@ -35,10 +37,10 @@ export default function Nav() {
 
         <div className={styles.navActions}>
           <Link href="/login" className={styles.navLogin}>
-            Log in
+            Log In
           </Link>
           <Link href="/register" className={`${styles.btn} ${styles.btnPrimary}`}>
-            Start for free
+            Start for Free
           </Link>
         </div>
 
@@ -69,10 +71,10 @@ export default function Nav() {
         </div>
         <div className={styles.mobileMenuActions}>
           <Link href="/login" className={`${styles.btn} ${styles.btnSecondary}`}>
-            Log in
+            Log In
           </Link>
           <Link href="/register" className={`${styles.btn} ${styles.btnPrimary}`}>
-            Start for free
+            Start for Free
           </Link>
         </div>
       </div>

@@ -30,6 +30,8 @@ export default function Footer() {
               <a href="#Product" className={styles.link}>Product</a>
               <a href="#Features" className={styles.link}>Features</a>
               <a href="#Security" className={styles.link}>Security</a>
+              <a href="#Download" className={styles.link}>Download</a>
+              <a href="#Sponsor" className={styles.link}>Sponsor</a>
               <a href="#Support" className={styles.link}>Support</a>
             </div>
           </div>
@@ -54,7 +56,7 @@ export default function Footer() {
             <svg width="14" height="14">
               <use href="#Icon-Up" />
             </svg>
-            Back to top
+            Back to Top
           </a>
         </div>
       </div>
