@@ -71,23 +71,40 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
   const [view, setView] = useState<"all" | "favorites">("all");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const forceLogout = useCallback(async () => {
+    await fetch("/api/auth/logout", { method: "POST" }).catch(() => { });
+    setUser(null);
+    router.push("/login");
+    router.refresh();
+  }, [router]);
+
   const refreshUser = useCallback(async () => {
     setUserLoading(true);
     try {
       const response = await fetch("/api/auth/me");
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
+      if (!response.ok) {
+        await forceLogout();
+        return;
       }
+      const data = await response.json();
+      if (!data.user) {
+        await forceLogout();
+        return;
+      }
+      setUser(data.user);
     } finally {
       setUserLoading(false);
     }
-  }, []);
+  }, [forceLogout]);
 
   const refreshItems = useCallback(async () => {
     setItemsLoading(true);
     try {
       const response = await fetch("/api/vault");
+      if (response.status === 401) {
+        await forceLogout();
+        return;
+      }
       if (response.ok) {
         const data = await response.json();
         setItems(data.items);
@@ -95,12 +112,16 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setItemsLoading(false);
     }
-  }, []);
+  }, [forceLogout]);
 
   const refreshFolders = useCallback(async () => {
     setFoldersLoading(true);
     try {
       const response = await fetch("/api/folders");
+      if (response.status === 401) {
+        await forceLogout();
+        return;
+      }
       if (response.ok) {
         const data = await response.json();
         setFolders(data.folders);
@@ -108,13 +129,34 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setFoldersLoading(false);
     }
-  }, []);
+  }, [forceLogout]);
 
   useEffect(() => {
     refreshUser();
     refreshItems();
     refreshFolders();
   }, [refreshUser, refreshItems, refreshFolders]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshUser();
+    }, 10000);
+
+    function handleVisibility() {
+      if (document.visibilityState === "visible") {
+        refreshUser();
+      }
+    }
+
+    document.addEventListener("visibilitychange", handleVisibility);
+    window.addEventListener("focus", handleVisibility);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      window.removeEventListener("focus", handleVisibility);
+    };
+  }, [refreshUser]);
 
   const createFolder = useCallback(
     async (name: string) => {
@@ -246,7 +288,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
 export function useDashboard(): DashboardContextValue {
   const ctx = useContext(DashboardContext);
   if (!ctx) {
-    throw new Error("useDashboard must be used within a DashboardProvider");
+    throw new Error("useDashboard must be used within a DashboardProvider.");
   }
   return ctx;
 }

@@ -71,3 +71,30 @@ export interface FolderDto {
 }
 
 export const DEFAULT_FOLDERS = [ "Work", "Personal", "Development", "Finance" ];
+
+export type SessionDevice = "desktop" | "mobile" | "tablet";
+
+export interface SessionDocument {
+  _id?: ObjectId;
+  userId: string;
+  sessionId: string;
+  userAgent: string;
+  ip: string | null;
+  browser: string;
+  os: string;
+  device: SessionDevice;
+  createdAt: Date;
+  lastActiveAt: Date;
+  revokedAt: Date | null;
+}
+
+export interface SessionDto {
+  id: string;
+  browser: string;
+  os: string;
+  device: SessionDevice;
+  ip: string | null;
+  createdAt: string;
+  lastActiveAt: string;
+  current: boolean;
+}

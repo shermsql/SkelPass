@@ -47,3 +47,8 @@ export async function getFoldersCollection() {
   const db = await getDb();
   return db.collection("folders");
 }
+
+export async function getSessionsCollection() {
+  const db = await getDb();
+  return db.collection("sessions");
+}

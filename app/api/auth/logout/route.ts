@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 
-import { sessionCookieOptions } from "@/lib/auth";
+import { getCurrentSession, revokeSession, sessionCookieOptions } from "@/lib/auth";
 
 export async function POST() {
+  const session = await getCurrentSession();
+  if (session) {
+    await revokeSession(session.userId, session.sessionId);
+  }
+
   const response = NextResponse.json({ ok: true });
   response.cookies.set(sessionCookieOptions.name, "", {
     httpOnly: true,

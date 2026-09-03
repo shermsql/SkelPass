@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
 import { getFoldersCollection, getUsersCollection } from "@/lib/mongodb";
-import { createSessionToken, sessionCookieOptions } from "@/lib/auth";
+import { createSession, sessionCookieOptions } from "@/lib/auth";
 
 import { DEFAULT_FOLDERS, type FolderDocument, type UserDocument } from "@/lib/types";
 
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
       await folders.insertMany(folderDocs);
     }
 
-    const token = await createSessionToken({ userId, email });
+    const { token } = await createSession(userId, email, request);
 
     const response = NextResponse.json({
       user: { id: userId, name, email, avatarDataUrl: null },
