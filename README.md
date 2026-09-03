@@ -21,6 +21,10 @@ This project is built with **Next.js (App Router)** and **MongoDB**.
   become uncategorized
 - Account settings page: edit name/email, upload and crop a profile photo,
   change your master password
+- Active session management: every login is tracked in the database with
+  device, browser, and IP info; view all signed-in devices from account
+  settings and revoke any of them individually, or sign out everywhere
+  else with one click — revoked sessions are kicked out in real time
 - Search, vault health score, secure password generator
 - `middleware.ts` protects the `/dashboard` route (and everything under it)
 
@@ -34,19 +38,21 @@ app/
   register/page.tsx                 Register page
   dashboard/
     layout.tsx                      Shared shell (Sidebar + Topbar) for /dashboard/*
-    DashboardContext.tsx            Client-side state shared across dashboard pages
+    DashboardContext.tsx            Client-side state shared across dashboard pages (polls session validity)
     page.tsx                        Vault view (protected)
     Dashboard.module.css
     account/
-      page.tsx                      Account settings (profile photo, name/email, password)
+      page.tsx                      Account settings (profile photo, name/email, password, active sessions)
       Account.module.css
   api/
     auth/register/route.ts
     auth/login/route.ts
-    auth/logout/route.ts
+    auth/logout/route.ts            POST — clears cookie + revokes the current DB session
     auth/me/route.ts
     auth/profile/route.ts           PATCH — update name/email/avatar
     auth/password/route.ts          PATCH — change master password
+    auth/sessions/route.ts          GET (list active sessions) / DELETE (revoke all but current)
+    auth/sessions/[id]/route.ts     DELETE — revoke a single session
     vault/route.ts                  GET (list) / POST (create)
     vault/[id]/route.ts             GET / PATCH / DELETE
     vault/generate/route.ts         Secure password generator
@@ -63,11 +69,11 @@ components/
   PasswordField/PasswordField.tsx
   IconSprite/IconSprite.tsx         Shared SVG icon set
 lib/
-  mongodb.ts                        MongoDB connection singleton
-  auth.ts                           JWT session helpers + fresh profile lookup
+  mongodb.ts                        MongoDB connection singleton (users, vault, folders, sessions)
+  auth.ts                           JWT session helpers, DB-backed session management, fresh profile lookup
   crypto.ts                         AES-256-GCM encryption helpers
-  types.ts                          Shared TypeScript types (camelCase fields)
-middleware.ts                       Protects the /dashboard route
+  types.ts                          Shared TypeScript types (camelCase fields, incl. SessionDocument/SessionDto)
+middleware.ts                       Protects the /dashboard route (JWT signature check only; DB-backed revocation is enforced in getCurrentSession() on the server)
 ```
 
 #### 🚀 Setup
