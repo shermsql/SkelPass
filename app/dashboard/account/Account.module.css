@@ -240,3 +240,66 @@
     align-items: flex-start;
   }
 }
+
+.sessionList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sessionRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.sessionIcon {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+}
+
+.sessionIcon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sessionInfo {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sessionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-soft);
+  font-size: 11px;
+}
+
+.sessionBadge {
+  padding: 2px 7px;
+  border: 1px solid rgba(121, 184, 147, 0.35);
+  border-radius: 100px;
+  background: rgba(121, 184, 147, 0.08);
+  color: var(--green);
+  font-size: 9px;
+}
+
+.sessionMeta {
+  margin-top: 4px;
+  color: var(--dim);
+  font-size: 9px;
+}
+
+.signOutAllButton {
+  margin-top: 16px;
+}

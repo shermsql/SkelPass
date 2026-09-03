@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
 import { getUsersCollection } from "@/lib/mongodb";
-import { createSessionToken, sessionCookieOptions } from "@/lib/auth";
+import { createSession, sessionCookieOptions } from "@/lib/auth";
 
 import type { UserDocument } from "@/lib/types";
 
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     }
 
     const userId = user._id!.toString();
-    const token = await createSessionToken({ userId, email: user.email });
+    const { token } = await createSession(userId, user.email, request);
 
     const response = NextResponse.json({
       user: {

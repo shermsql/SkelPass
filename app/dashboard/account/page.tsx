@@ -7,9 +7,30 @@ import Image from "next/image";
 
 import { useDashboard } from "../DashboardContext";
 
+import type { SessionDto } from "@/lib/types";
+
 import styles from "./Account.module.css";
 
 const MAX_AVATAR_DIMENSION = 256;
+
+function deviceIconHref(os: string): string {
+  if (/windows/i.test(os)) return "#Icon-Windows";
+  if (/mac|ios/i.test(os)) return "#Icon-Apple";
+  if (/linux/i.test(os)) return "#Icon-Linux";
+  return "#Icon-Globe";
+}
+
+function formatRelativeTime(iso: string): string {
+  const diffMs = Date.now() - new Date(iso).getTime();
+  const diffMin = Math.round(diffMs / 60000);
+  if (diffMin < 1) return "Just Now";
+  if (diffMin < 60) return `${diffMin} Minute Ago`;
+  const diffHour = Math.round(diffMin / 60);
+  if (diffHour < 24) return `${diffHour} Hour Ago`;
+  const diffDay = Math.round(diffHour / 24);
+  if (diffDay < 30) return `${diffDay} Day Ago`;
+  return new Date(iso).toLocaleDateString();
+}
 
 function resizeImageToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -67,12 +88,77 @@ export default function AccountPage() {
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
 
+  const [sessions, setSessions] = useState<SessionDto[]>([]);
+  const [sessionsLoading, setSessionsLoading] = useState(true);
+  const [sessionsError, setSessionsError] = useState<string | null>(null);
+  const [revokingId, setRevokingId] = useState<string | null>(null);
+  const [revokingAll, setRevokingAll] = useState(false);
+
   useEffect(() => {
     if (user) {
       setName(user.name);
       setEmail(user.email);
     }
   }, [user?.id]);
+
+  useEffect(() => {
+    async function loadSessions() {
+      setSessionsLoading(true);
+      setSessionsError(null);
+      try {
+        const response = await fetch("/api/auth/sessions");
+        const data = await response.json();
+        if (!response.ok) {
+          setSessionsError(data.error || "Could not load your sessions.");
+        } else {
+          setSessions(data.sessions);
+        }
+      } catch {
+        setSessionsError("Could not connect to the server. Please try again.");
+      } finally {
+        setSessionsLoading(false);
+      }
+    }
+    loadSessions();
+  }, []);
+
+  async function handleRevokeSession(sessionId: string) {
+    setSessionsError(null);
+    setRevokingId(sessionId);
+    try {
+      const response = await fetch(`/api/auth/sessions/${sessionId}`, {
+        method: "DELETE",
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setSessionsError(data.error || "Could not sign out that device.");
+      } else {
+        setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+      }
+    } catch {
+      setSessionsError("Could not connect to the server. Please try again.");
+    } finally {
+      setRevokingId(null);
+    }
+  }
+
+  async function handleRevokeAllOthers() {
+    setSessionsError(null);
+    setRevokingAll(true);
+    try {
+      const response = await fetch("/api/auth/sessions", { method: "DELETE" });
+      const data = await response.json();
+      if (!response.ok) {
+        setSessionsError(data.error || "Could not sign out other devices.");
+      } else {
+        setSessions((prev) => prev.filter((s) => s.current));
+      }
+    } catch {
+      setSessionsError("Could not connect to the server. Please try again.");
+    } finally {
+      setRevokingAll(false);
+    }
+  }
 
   async function handleAvatarChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -198,11 +284,11 @@ export default function AccountPage() {
 
   const initials = user
     ? user.name
-        .split(" ")
-        .map((part) => part.charAt(0))
-        .join("")
-        .slice(0, 2)
-        .toUpperCase()
+      .split(" ")
+      .map((part) => part.charAt(0))
+      .join("")
+      .slice(0, 2)
+      .toUpperCase()
     : "SK";
 
   if (userLoading && !user) {
@@ -279,7 +365,9 @@ export default function AccountPage() {
             </div>
           </div>
           {avatarError && <div className={styles.error}>{avatarError}</div>}
-          <p className={styles.hint}>JPEG or PNG. It&#39;s cropped and resized automatically.</p>
+          <p className={styles.hint}>
+            JPEG or PNG. It&#39;s cropped and resized automatically.
+          </p>
         </section>
 
         <section className={styles.card}>
@@ -307,12 +395,15 @@ export default function AccountPage() {
             </div>
 
             {profileError && <div className={styles.error}>{profileError}</div>}
-            {profileSuccess && <div className={styles.success}>Profile updated.</div>}
+            {profileSuccess && <div className={styles.success}>Profile Updated.</div>}
 
             <button type="submit" className={styles.primaryButton} disabled={savingProfile}>
               {savingProfile ? "Saving…" : "Save Changes"}
             </button>
           </form>
+          <p className={styles.hint}>
+            Your name and email address are used for account recovery and notifications.
+          </p>
         </section>
 
         <section className={styles.card}>
@@ -355,12 +446,78 @@ export default function AccountPage() {
             </div>
 
             {passwordError && <div className={styles.error}>{passwordError}</div>}
-            {passwordSuccess && <div className={styles.success}>Password updated.</div>}
+            {passwordSuccess && <div className={styles.success}>Password Updated.</div>}
 
             <button type="submit" className={styles.primaryButton} disabled={savingPassword}>
               {savingPassword ? "Updating…" : "Update Password"}
             </button>
           </form>
+          <p className={styles.hint}>
+            Changing your master password will require you to re-authenticate all your devices.
+          </p>
+        </section>
+
+        <section className={styles.card}>
+          <div className={styles.cardTitle}>Active Sessions</div>
+
+          {sessionsError && <div className={styles.error}>{sessionsError}</div>}
+
+          {sessionsLoading ? (
+            <div className={styles.hint}>Loading Sessions…</div>
+          ) : sessions.length === 0 ? (
+            <div className={styles.hint}>No active sessions found.</div>
+          ) : (
+            <div className={styles.sessionList}>
+              {sessions.map((s) => (
+                <div key={s.id} className={styles.sessionRow}>
+                  <div className={styles.sessionIcon}>
+                    <svg>
+                      <use href={deviceIconHref(s.os)} />
+                    </svg>
+                  </div>
+                  <div className={styles.sessionInfo}>
+                    <div className={styles.sessionTitle}>
+                      {s.browser} · {s.os}
+                      {s.current && (
+                        <span className={styles.sessionBadge}>This Device</span>
+                      )}
+                    </div>
+                    <div className={styles.sessionMeta}>
+                      {s.ip ? `${s.ip} · ` : ""}
+                      Last Active {formatRelativeTime(s.lastActiveAt)}
+                    </div>
+                  </div>
+                  {!s.current && (
+                    <button
+                      type="button"
+                      className={styles.textButton}
+                      onClick={() => handleRevokeSession(s.id)}
+                      disabled={revokingId === s.id}
+                    >
+                      {revokingId === s.id ? "Signing Out…" : "Sign Out"}
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {sessions.some((s) => !s.current) && (
+            <button
+              type="button"
+              className={`${styles.secondaryButton} ${styles.signOutAllButton}`}
+              onClick={handleRevokeAllOthers}
+              disabled={revokingAll}
+            >
+              <svg>
+                <use href="#Logout" />
+              </svg>
+              {revokingAll ? "Signing Out…" : "Sign Out All Other Devices"}
+            </button>
+          )}
+          <p className={styles.hint}>
+            These are the devices currently signed in to your account.
+          </p>
         </section>
       </div>
     </div>

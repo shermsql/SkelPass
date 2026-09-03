@@ -66,7 +66,7 @@ export default function LandingPage() {
 
               <div className={styles.heroActions}>
                 <Link href="/register" className={`${styles.btn} ${styles.btnPrimary} ${styles.btnLarge}`}>
-                  Start for free
+                  Start for Free
                   <svg className={styles.icon}>
                     <use href="#Icon-Arrow" />
                   </svg>
@@ -270,7 +270,7 @@ export default function LandingPage() {
                 </p>
 
                 <a
-                  href="https://github.com/Skelvric/SkelPass-Desktop/releases/tag/v0.2.0"
+                  href="https://github.com/Skelvric/SkelPass-Desktop/releases/download/v0.2.0/SkelPass.Setup.0.2.0.exe"
                   target="_blank"
                   rel="noreferrer"
                   className={`${styles.btn} ${styles.btnPrimary} ${styles.downloadButton}`}

@@ -162,7 +162,7 @@ export default function DashboardPage() {
             <svg>
               <use href="#Plus" />
             </svg>
-            Add password
+            Add Password
           </button>
         </div>
       </section>
@@ -185,7 +185,7 @@ export default function DashboardPage() {
             <div className={styles.sectionMeta}>
               {itemsLoading
                 ? "Loading…"
-                : `${filteredItems.length} item${filteredItems.length === 1 ? "" : "s"}`}
+                : `${filteredItems.length} Item${filteredItems.length === 1 ? "" : "s"}`}
             </div>
           </div>
 
@@ -212,7 +212,7 @@ export default function DashboardPage() {
             <div className={styles.sectionHead}>
               <div className={styles.sectionTitle}>Folders</div>
               <div className={styles.sectionMeta}>
-                {folders.length} folder{folders.length === 1 ? "" : "s"}
+                {folders.length} Folder{folders.length === 1 ? "" : "s"}
               </div>
             </div>
             {folders.length > 0 ? (
@@ -232,7 +232,7 @@ export default function DashboardPage() {
                     </svg>
                     <strong>{folder.name}</strong>
                     <span>
-                      {folderCounts[folder.name] ?? 0} password
+                      {folderCounts[folder.name] ?? 0} Password
                       {(folderCounts[folder.name] ?? 0) === 1 ? "" : "s"}
                     </span>
                   </button>
@@ -248,7 +248,7 @@ export default function DashboardPage() {
 
         <aside className={styles.rightColumn}>
           <section>
-            <div className={styles.securityHeader}>Vault health</div>
+            <div className={styles.securityHeader}>Vault Health</div>
             <div className={styles.securityScore}>
               <div className={styles.score}>
                 <strong>{healthScore}</strong>
@@ -267,21 +267,21 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className={styles.securityRow}>
-              <span className={styles.securityRowLabel}>Strong passwords</span>
+              <span className={styles.securityRowLabel}>Strong Passwords</span>
               <span className={styles.securityRowValue}>
                 {strongCount} / {items.length}
               </span>
             </div>
             <div className={`${styles.securityRow} ${weakCount > 0 ? styles.warning : ""}`}>
-              <span className={styles.securityRowLabel}>Weak passwords</span>
+              <span className={styles.securityRowLabel}>Weak Passwords</span>
               <span className={styles.securityRowValue}>
-                {weakCount} item{weakCount === 1 ? "" : "s"}
+                {weakCount} Item{weakCount === 1 ? "" : "s"}
               </span>
             </div>
           </section>
 
           <section className={styles.quick}>
-            <div className={styles.quickTitle}>Quick add</div>
+            <div className={styles.quickTitle}>Quick Add</div>
             <div className={styles.quickDescription}>
               Keep everything important in one calm place.
             </div>
@@ -292,7 +292,7 @@ export default function DashboardPage() {
                     <use href="#Key" />
                   </svg>
                 </span>
-                <span>New password</span>
+                <span>New Password</span>
               </button>
               <button className={styles.quickButton} onClick={openCreateModalWithGenerated}>
                 <span className={styles.quickIcon}>
@@ -300,7 +300,7 @@ export default function DashboardPage() {
                     <use href="#Wand" />
                   </svg>
                 </span>
-                <span>Generate password</span>
+                <span>Generate Password</span>
               </button>
             </div>
           </section>
